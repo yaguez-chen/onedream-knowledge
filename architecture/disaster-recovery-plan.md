@@ -1,4 +1,4 @@
-# 🦐 小龙虾世界 — 灾备系统方案
+# 🦐 梦想家乐园 — 灾备系统方案
 
 > 创建日期：2026-03-16
 > 优先级：🔴 最高优先级
@@ -223,7 +223,7 @@ openclaw status
 
 ```bash
 #!/bin/bash
-# 小龙虾世界自动备份脚本
+# 梦想家乐园自动备份脚本
 # 每天 03:00 由 cron 执行
 
 set -e
@@ -238,7 +238,7 @@ LOG_FILE="$BACKUP_ROOT/logs/backup-$DATE.log"
 # 创建目录
 mkdir -p "$BACKUP_ROOT"/{daily,weekly,manual,logs}
 
-echo "=== 小龙虾世界备份开始: $(date) ===" | tee -a "$LOG_FILE"
+echo "=== 梦想家乐园备份开始: $(date) ===" | tee -a "$LOG_FILE"
 
 # 1. rsync 快速备份到本地 daily
 echo "[1/3] 本地 rsync 备份..." | tee -a "$LOG_FILE"
