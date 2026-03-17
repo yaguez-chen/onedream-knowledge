@@ -38,13 +38,13 @@
 ```
 /home/gang/.openclaw/shared-knowledge/
 ├── charter/          # 公司章程（仅阿尔法可修改）
+│   └── agents/       # 伙伴档案
 ├── architecture/     # 架构设计类
 ├── operations/       # 操作运维类
 │   └── briefings/    # 简报归档
 ├── cases/            # 案例经验类
 ├── learnings/        # 学习总结类
 ├── decisions/        # 决策记录类
-├── agents/           # 伙伴档案类
 ├── index.md          # 知识索引（入口）
 ├── CONTRIBUTING.md   # 贡献指南
 ├── contribution-process.md  # 贡献流程
@@ -59,13 +59,12 @@
 
 | 目录 | 适用内容 | 示例 |
 |------|----------|------|
-| `charter/` | 公司章程、治理制度、核心规范 | 组织架构、管理办法、工作规范 |
+| `charter/` | 公司章程、治理制度、核心规范、伙伴档案 | 组织架构、管理办法、工作规范、伙伴介绍 |
 | `architecture/` | 系统设计、架构方案、通信协议 | 灾备方案、沟通体系设计 |
 | `operations/` | 运维指南、操作流程、配置说明 | 简报流程、协作规范 |
 | `cases/` | 故障排除、经验教训、最佳实践 | 心跳死锁案例 |
 | `learnings/` | 学习笔记、知识总结 | SDK 补丁学习 |
 | `decisions/` | 决策记录 | 知识系统设置决策 |
-| `agents/` | 伙伴档案、专业领域 | 伙伴介绍 |
 | `briefings/` | 日报/简报归档 | 每日简报 |
 
 ### 2.3 文件元信息
