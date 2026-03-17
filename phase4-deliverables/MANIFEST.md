@@ -43,3 +43,8 @@
 ---
 
 *注：知识库管理办法和灾备管理办法仍在起草中，完成后另行归档*
+
+## 🏛️ 管理办法（今日新增）
+- disaster-recovery-policy.md — 灾备管理办法（贝塔，251行，七章二十条）
+- workflow-standards.md — 工作流程规范（约塔，444行，六章+附录）
+- knowledge-base-management-policy.md — 知识库管理办法（西塔，316行）
