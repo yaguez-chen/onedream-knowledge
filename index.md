@@ -28,7 +28,9 @@
 | `daily-briefing-process.md` | 每日简报流程 | #简报 #流程 | 2026-03-16 |
 | `event-broadcast-process.md` | 事件广播流程 | #事件 #广播 | 2026-03-16 |
 | `heartbeat-setup-guide.md` | 心跳设置指南 | #运维 #配置 | 2026-03-16 |
+| `workflow-standards.md` | 工作流程规范（交付物/日报/任务确认/协作/归档） | #流程 #规范 #管理 | 2026-03-17 |
 | `knowledge-base-management-policy.md` | 知识库管理办法 | #知识管理 #制度 #管理 | 2026-03-17 |
+| `disaster-recovery-policy.md` | 灾备管理办法 | #灾备 #安全 #管理 | 2026-03-17 |
 
 ### 📋 案例知识 (`cases/`)
 *问题解决、最佳实践、成功案例*
