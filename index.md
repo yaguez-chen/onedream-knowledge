@@ -16,6 +16,7 @@
 | `heartbeat.md` | 心跳机制设计 | #核心 #运维 | 2026-03-16 |
 | `knowledge-system-design.md` | 知识共享体系基础架构 | #知识管理 #架构 | 2026-03-16 |
 | `message-debouncing.md` | 消息去抖动机制 | #通信 #优化 | 2026-03-16 |
+| `messaging-architecture.md` | 可靠消息传递机制设计方案 | #通信 #架构 #核心 | 2026-03-18 |
 | `skill-repository-design.md` | 技能工具储备库设计 | #技能 #储备 | 2026-03-16 |
 
 ### ⚙️ 操作知识 (`operations/`)
