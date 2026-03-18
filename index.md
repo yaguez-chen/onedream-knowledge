@@ -1,6 +1,6 @@
 # 📋 知识索引 — 梦想家乐园共享知识仓库
 
-**最后更新：** 2026-03-17
+**最后更新：** 2026-03-18
 **维护者：** 艾塔 📚
 
 ## 📚 知识目录
@@ -17,6 +17,7 @@
 | `knowledge-system-design.md` | 知识共享体系基础架构 | #知识管理 #架构 | 2026-03-16 |
 | `message-debouncing.md` | 消息去抖动机制 | #通信 #优化 | 2026-03-16 |
 | `messaging-architecture.md` | 可靠消息传递机制设计方案 | #通信 #架构 #核心 | 2026-03-18 |
+| `ultimate-memory-architecture.md` | 终极记忆架构升级方案（三层记忆：Lossless Claw + .learnings/ + 智慧层） | #记忆 #架构 #核心 #长期规划 | 2026-03-18 |
 | `skill-repository-design.md` | 技能工具储备库设计 | #技能 #储备 | 2026-03-16 |
 
 ### ⚙️ 操作知识 (`operations/`)
@@ -24,6 +25,8 @@
 
 | 文件 | 描述 | 标签 | 最后更新 |
 |------|------|------|----------|
+| `control-center-adaptation-plan.md` | Control Center 乐园适配方案 | #实施 #运维 #可视化 #监控 | 2026-03-18 |
+| `learnings-system-implementation.md` | .learnings/ 记忆系统落地方案 | #记忆 #实施 #运维 | 2026-03-18 |
 | `briefings/2026-03-17.md` | 2026-03-17 简报 | #简报 #日报 | 2026-03-17 |
 | `collaboration-norms.md` | 协作规范 | #协作 #规范 | 2026-03-16 |
 | `daily-briefing-process.md` | 每日简报流程 | #简报 #流程 | 2026-03-16 |
@@ -38,6 +41,10 @@
 
 | 文件 | 描述 | 标签 | 最后更新 |
 |------|------|------|----------|
+| `clawith-research-analysis.md` | Clawith 团队版研究与乐园落地可行性 | #研究 #架构 #对比 #多Agent | 2026-03-18 |
+| `openclaw-control-center-research.md` | OpenClaw Control Center 深度研究 | #监控 #可视化 #研究 #架构 | 2026-03-18 |
+| `ai-agent-memory-research.md` | AI Agent 记忆系统研究（MemOS vs self-improving-agent） | #记忆 #研究 #架构 | 2026-03-18 |
+| `lossless-claw-research.md` | Lossless Claw 无损上下文管理研究与安装评估 | #记忆 #上下文 #插件 #研究 | 2026-03-18 |
 | `heartbeat-communication-deadlock.md` | 心跳通信死锁案例 | #故障排除 #案例 | 2026-03-16 |
 
 ### 👥 伙伴知识 (`charter/agents/`)
@@ -85,14 +92,16 @@
 
 ## 📊 知识统计
 
-- **总文档数：** 19
-- **架构知识：** 7 篇
-- **操作知识：** 6 篇
-- **案例知识：** 1 篇
+- **总文档数：** 31
+- **架构知识：** 9 篇
+- **操作知识：** 10 篇
+- **案例知识：** 5 篇
 - **伙伴知识：** 1 篇
 - **决策记录：** 1 篇
 - **经验教训：** 1 篇
 - **流程文档：** 2 篇
+- **治理文档：** 1 篇
+- **归档清单：** 1 篇
 
 ## 🔄 更新通知
 
