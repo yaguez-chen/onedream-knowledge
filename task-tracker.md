@@ -32,7 +32,7 @@
 
 | ID | 任务 | 负责人 | 状态 | 截止 | 说明 |
 |----|------|--------|------|------|------|
-| P2-01 | 自动session恢复验证 | 贝塔 | 🔄 进行中 | 15:00 | 正在实现--recover参数并测试 | 14:39收到，正在执行 |
+| P2-01 | 自动session恢复验证 | 贝塔 | ✅ 已完成 | 15:00 | session-health-check.sh --recover | 已实现--recover+修复mtime+清理重复代码 |
 | P2-02 | 健康检测脚本修复 | 贝塔 | ✅ 已完成 | 15:00 | session-health-check.sh v2 | v2已使用jsonl时间戳，10:12修复 |
 
 ---
@@ -42,8 +42,9 @@
 | ID | 任务 | 负责人 | 状态 | 截止 | 说明 |
 |----|------|--------|------|------|------|
 | R1 | 探索OpenClaw webhook机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/openclaw-webhook-analysis.md |
-| R2 | 研究OpenClaw on_message机制 | 拉姆达 | ⏳ 待接收 | 16:00 | shared-knowledge/research/ |
-| G1 | 实现消息投递确认机制 | 伽马 | 🔄 草案 | 17:00 | 178行草案，等R3，需继续推进 |
+| R2 | 研究OpenClaw on_message机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/on-message-mechanism-analysis.md |
+| R3 | 设计事件驱动通知方案 | 拉姆达 | ✅ 已完成 | — | shared-knowledge/architecture/event-driven-notification-design.md |
+| G1 | 实现消息投递确认机制 | 伽马 | 🔄 进行中 | 17:00 | R3已完成，G1依赖已解除，伽马正在实现中（17:32更新，439行文档） |
 | G2 | 实现Focus-Trigger Binding | 伽马 | ⏳ 待接收 | 17:00 | 阿尔法12:01发出 |
 | G3 | Agent自适应触发器 | 伽马+拉姆达 | ⏳ 待接收 | TBD | 阿尔法12:01发出 |
 | D1 | 性能测试方案 | 德尔塔 | 🔄 方案完成 | 等G1 | 172行方案，等G1完成后执行 |
