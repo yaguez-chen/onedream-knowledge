@@ -42,10 +42,10 @@
 | ID | 任务 | 负责人 | 状态 | 截止 | 说明 |
 |----|------|--------|------|------|------|
 | R1 | 探索OpenClaw webhook机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/openclaw-webhook-analysis.md |
-| R2 | 研究OpenClaw on_message机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/on-message-mechanism-analysis.md |
-| R3 | 设计事件驱动通知方案 | 拉姆达 | ✅ 已完成 | — | shared-knowledge/architecture/event-driven-notification-design.md |
-| G1 | 实现消息投递确认机制 | 伽马 | 🔄 进行中 | 17:00 | R3已完成，G1依赖已解除，伽马正在实现中（17:32更新，439行文档） |
-| G2 | 实现Focus-Trigger Binding | 伽马 | ⏳ 待接收 | 17:00 | 阿尔法12:01发出 |
+| R2 | 研究OpenClaw on_message机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/on-message-mechanism-analysis.md | Cron 3分钟轮询+Webhook触发推荐方案 |
+| R3 | 设计事件驱动通知方案 | 拉姆达 | ✅ 已完成 | 16:34 | shared-knowledge/architecture/event-driven-notification-design.md | 四级降级即时通讯方案 |
+| G1 | 实现消息投递确认机制 | 伽马 | ✅ 已完成 | 17:00 | shared-knowledge/implementation/delivery-confirmation.md | 核心实现完成，含process-acks.sh+delivery-status.sh+send-and-notify.sh |
+| G2 | 实现Focus-Trigger Binding | 伽马 | ✅ 已完成 | 17:00 | shared-knowledge/implementation/focus-trigger-binding.md | 核心实现完成，含focus-cli.sh+check-focus-triggers.sh |
 | G3 | Agent自适应触发器 | 伽马+拉姆达 | ⏳ 待接收 | TBD | 阿尔法12:01发出 |
 | D1 | 性能测试方案 | 德尔塔 | 🔄 方案完成 | 等G1 | 172行方案，等G1完成后执行 |
 | D3 | 投递可靠性测试方案 | 德尔塔 | 🔄 方案完成 | 等G1 | 266行方案，等G1完成后执行 |
