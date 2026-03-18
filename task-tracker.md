@@ -45,8 +45,8 @@
 | R2 | 研究OpenClaw on_message机制 | 拉姆达 | ✅ 已完成 | 16:00 | shared-knowledge/research/on-message-mechanism-analysis.md | Cron 3分钟轮询+Webhook触发推荐方案 |
 | R3 | 设计事件驱动通知方案 | 拉姆达 | ✅ 已完成 | 16:34 | shared-knowledge/architecture/event-driven-notification-design.md | 四级降级即时通讯方案 |
 | G1 | 实现消息投递确认机制 | 伽马 | ✅ 已完成 | 17:00 | shared-knowledge/implementation/delivery-confirmation.md | 核心实现完成，含process-acks.sh+delivery-status.sh+send-and-notify.sh |
-| G2 | 实现Focus-Trigger Binding | 伽马 | 🔴 需修复 | 17:00 | shared-knowledge/implementation/focus-trigger-binding.md | 德尔塔测试发现jq依赖问题，需安装系统jq或改用Python |
-| G3 | Agent自适应触发器 | 伽马+拉姆达 | 🔴 需修复 | TBD | shared-knowledge/implementation/adaptive-triggers.md | 德尔塔测试发现协作场景bug，条件判断把none当有效依赖 |
+| G2 | 实现Focus-Trigger Binding | 伽马 | ✅ 已完成 | 17:00 | shared-knowledge/implementation/focus-trigger-binding.md | 德尔塔第二轮测试通过，Python实现修复有效 |
+| G3 | Agent自适应触发器 | 伽马+拉姆达 | ✅ 已完成 | TBD | shared-knowledge/implementation/adaptive-triggers.md | 德尔塔第二轮测试通过，协作任务bug修复有效 |
 | D1 | 性能测试和优化 | 德尔塔 | 🔄 进行中 | 等G1 | 172行方案，G1已完成，开始执行测试 |
 | D3 | 投递可靠性测试 | 德尔塔 | 🔄 进行中 | 等G1 | 266行方案，G1已完成，开始执行测试 |
 | T-008 | 评估Plaza信息流效果 | 德尔塔 | 🔄 进行中 | TBD | 子代理开始评估 |
