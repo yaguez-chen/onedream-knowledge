@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background -->
+  <circle cx="128" cy="128" r="128" fill="#FFF5E6"/>
+  <circle cx="128" cy="128" r="120" fill="#FFE8CC" opacity="0.5"/>
+  
+  <!-- Body / Denim Jacket -->
+  <path d="M60 256 Q60 190 80 175 L100 165 Q128 155 156 165 L176 175 Q196 190 196 256 Z" fill="#5B7DB1"/>
+  <path d="M90 256 Q90 200 100 185 L110 178 Q128 172 146 178 L156 185 Q166 200 166 256 Z" fill="#7B9AC4"/>
+  <!-- Jacket collar -->
+  <path d="M100 175 L115 160 Q128 155 141 160 L156 175" fill="none" stroke="#4A6899" stroke-width="2"/>
+  <path d="M115 160 L128 168 L141 160" fill="none" stroke="#4A6899" stroke-width="2"/>
+  <!-- Denim texture lines -->
+  <line x1="95" y1="195" x2="92" y2="240" stroke="#4A6899" stroke-width="0.5" opacity="0.3"/>
+  <line x1="161" y1="195" x2="164" y2="240" stroke="#4A6899" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Neck -->
+  <rect x="115" y="148" width="26" height="22" rx="5" fill="#F5CBA7"/>
+  
+  <!-- Head -->
+  <ellipse cx="128" cy="118" rx="42" ry="48" fill="#F5CBA7"/>
+  
+  <!-- Hair - slightly messy, youthful -->
+  <path d="M86 100 Q86 70 100 62 Q115 54 128 56 Q141 54 156 62 Q170 70 170 100 Q168 85 155 78 Q142 72 128 74 Q114 72 101 78 Q88 85 86 100 Z" fill="#3D2B1F"/>
+  <path d="M86 100 Q84 92 88 85 Q95 78 105 82 Q98 88 92 98 Z" fill="#3D2B1F"/>
+  <path d="M170 100 Q172 92 168 85 Q161 78 151 82 Q158 88 164 98 Z" fill="#3D2B1F"/>
+  <!-- Messy hair strands -->
+  <path d="M95 70 Q100 58 110 65" fill="none" stroke="#3D2B1F" stroke-width="3" stroke-linecap="round"/>
+  <path d="M135 58 Q140 50 150 60" fill="none" stroke="#3D2B1F" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Ears -->
+  <ellipse cx="86" cy="120" rx="6" ry="10" fill="#E8B896"/>
+  <ellipse cx="170" cy="120" rx="6" ry="10" fill="#E8B896"/>
+  
+  <!-- Eyes - bright, warm -->
+  <ellipse cx="112" cy="115" rx="7" ry="8" fill="white"/>
+  <ellipse cx="144" cy="115" rx="7" ry="8" fill="white"/>
+  <circle cx="113" cy="116" r="5" fill="#4A3728"/>
+  <circle cx="145" cy="116" r="5" fill="#4A3728"/>
+  <circle cx="114" cy="114" r="2" fill="white"/>
+  <circle cx="146" cy="114" r="2" fill="white"/>
+  <!-- Eyebrows - friendly arch -->
+  <path d="M103 103 Q112 98 120 102" fill="none" stroke="#3D2B1F" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M136 102 Q144 98 153 103" fill="none" stroke="#3D2B1F" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Nose - simple -->
+  <path d="M128 118 L125 130 Q128 133 131 130" fill="none" stroke="#D4A574" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Smile with dimples! -->
+  <path d="M112 140 Q128 152 144 140" fill="none" stroke="#C0785C" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Dimples -->
+  <path d="M108 138 Q106 142 108 145" fill="none" stroke="#D4A574" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M148 138 Q150 142 148 145" fill="none" stroke="#D4A574" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Cheek blush -->
+  <ellipse cx="105" cy="135" rx="8" ry="5" fill="#FFB8A0" opacity="0.35"/>
+  <ellipse cx="151" cy="135" rx="8" ry="5" fill="#FFB8A0" opacity="0.35"/>
+  
+  <!-- T-shirt under jacket -->
+  <path d="M110 168 Q128 175 146 168 L148 180 Q128 188 108 180 Z" fill="#F0F0F0"/>
+  
+  <!-- Label -->
+  <rect x="88" y="240" width="80" height="14" rx="7" fill="#5B7DB1" opacity="0.8"/>
+  <text x="128" y="250" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white" font-weight="bold">林远 · Alpha 🦐</text>
+</svg>

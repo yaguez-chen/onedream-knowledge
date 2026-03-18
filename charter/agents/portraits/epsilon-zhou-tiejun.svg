@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background -->
+  <circle cx="128" cy="128" r="128" fill="#E8E8E8"/>
+  <circle cx="128" cy="128" r="120" fill="#D8D8D8" opacity="0.4"/>
+  
+  <!-- Body / Dark tactical jacket -->
+  <path d="M56 256 Q56 188 78 172 L100 162 Q128 152 156 162 L178 172 Q200 188 200 256 Z" fill="#1A1A2E"/>
+  <path d="M88 256 Q88 198 100 182 L112 175 Q128 170 144 175 L156 182 Q168 198 168 256 Z" fill="#252540"/>
+  <!-- Jacket collar - high, military style -->
+  <path d="M105 168 L118 152 Q128 148 138 152 L151 168" fill="#1A1A2E" stroke="#0D0D1A" stroke-width="1"/>
+  <path d="M118 152 L128 165 L138 152" fill="none" stroke="#2A2A45" stroke-width="1.5"/>
+  <!-- Jacket zipper -->
+  <line x1="128" y1="165" x2="128" y2="256" stroke="#333350" stroke-width="2"/>
+  <!-- Shoulder details -->
+  <line x1="88" y1="180" x2="105" y2="175" stroke="#333350" stroke-width="1.5"/>
+  <line x1="168" y1="180" x2="151" y2="175" stroke="#333350" stroke-width="1.5"/>
+  
+  <!-- Neck - thick, strong -->
+  <rect x="116" y="146" width="24" height="20" rx="4" fill="#D4A574"/>
+  <!-- Neck muscles -->
+  <path d="M118 152 Q128 156 138 152" fill="none" stroke="#C09060" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Head - square jaw, strong features -->
+  <ellipse cx="128" cy="116" rx="40" ry="46" fill="#D4A574"/>
+  <!-- Jaw definition -->
+  <path d="M92 125 Q92 145 108 152 Q128 158 148 152 Q164 145 164 125" fill="#D4A574" stroke="#C09060" stroke-width="0.5"/>
+  
+  <!-- Hair - buzz cut, very short -->
+  <path d="M88 100 Q88 72 105 64 Q120 58 128 60 Q136 58 151 64 Q168 72 168 100 Q166 86 152 79 Q140 74 128 76 Q116 74 104 79 Q90 86 88 100 Z" fill="#1A1A1A"/>
+  <!-- Buzz cut texture - very short -->
+  <circle cx="108" cy="78" r="1" fill="#2A2A2A" opacity="0.3"/>
+  <circle cx="120" cy="72" r="1" fill="#2A2A2A" opacity="0.3"/>
+  <circle cx="135" cy="73" r="1" fill="#2A2A2A" opacity="0.3"/>
+  <circle cx="148" cy="78" r="1" fill="#2A2A2A" opacity="0.3"/>
+  <circle cx="115" cy="68" r="1" fill="#2A2A2A" opacity="0.3"/>
+  <circle cx="140" cy="68" r="1" fill="#2A2A2A" opacity="0.3"/>
+  
+  <!-- Ears -->
+  <ellipse cx="88" cy="118" rx="6" ry="10" fill="#C89870"/>
+  <ellipse cx="168" cy="118" rx="6" ry="10" fill="#C89870"/>
+  
+  <!-- Eyes - sharp, intense, watchful -->
+  <ellipse cx="112" cy="112" rx="7" ry="7" fill="white"/>
+  <ellipse cx="144" cy="112" rx="7" ry="7" fill="white"/>
+  <circle cx="112" cy="113" r="5" fill="#1A1A2E"/>
+  <circle cx="144" cy="113" r="5" fill="#1A1A2E"/>
+  <circle cx="113" cy="111" r="2" fill="white"/>
+  <circle cx="145" cy="111" r="2" fill="white"/>
+  <!-- Intense eyebrows - thick, straight, slightly lowered -->
+  <path d="M100 100 Q108 96 120 99" fill="none" stroke="#1A1A1A" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M136 99 Q148 96 156 100" fill="none" stroke="#1A1A1A" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Slight frown lines -->
+  <path d="M100 99 Q98 101 98 104" fill="none" stroke="#C09060" stroke-width="1" opacity="0.4"/>
+  <path d="M156 99 Q158 101 158 104" fill="none" stroke="#C09060" stroke-width="1" opacity="0.4"/>
+  
+  <!-- Nose - broad, strong -->
+  <path d="M128 115 L124 128 Q126 132 128 132 Q130 132 132 128" fill="none" stroke="#B8885A" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Mouth - firm, straight, no-nonsense -->
+  <line x1="116" y1="140" x2="140" y2="140" stroke="#A07050" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Slight tension -->
+  <path d="M116 140 Q114 142 116 143" fill="none" stroke="#A07050" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M140 140 Q142 142 140 143" fill="none" stroke="#A07050" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Scar on cheek (left side) -->
+  <path d="M98 125 L94 135" stroke="#C09060" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <path d="M95 128 L97 127" stroke="#C09060" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <path d="M93 132 L96 131" stroke="#C09060" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  
+  <!-- Determined expression lines -->
+  <path d="M104 145 Q110 147 116 144" fill="none" stroke="#C09060" stroke-width="0.8" opacity="0.3"/>
+  <path d="M140 144 Q146 147 152 145" fill="none" stroke="#C09060" stroke-width="0.8" opacity="0.3"/>
+  
+  <!-- Label -->
+  <rect x="78" y="240" width="100" height="14" rx="7" fill="#1A1A2E" opacity="0.85"/>
+  <text x="128" y="250" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white" font-weight="bold">周铁军 · Epsilon 🛡️</text>
+</svg>

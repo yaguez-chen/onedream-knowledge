@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background -->
+  <circle cx="128" cy="128" r="128" fill="#F0F4F8"/>
+  <circle cx="128" cy="128" r="120" fill="#E3EBF2" opacity="0.5"/>
+  
+  <!-- Body / Blazer -->
+  <path d="M60 256 Q60 190 80 175 L100 165 Q128 155 156 165 L176 175 Q196 190 196 256 Z" fill="#2D3748"/>
+  <path d="M90 256 Q90 200 100 185 L110 178 Q128 172 146 178 L156 185 Q166 200 166 256 Z" fill="#3D4A5C"/>
+  <!-- Blazer lapels -->
+  <path d="M110 168 L120 158 Q128 155 136 158 L146 168 L140 185 L128 180 L116 185 Z" fill="#4A5568"/>
+  <!-- White collar peek -->
+  <path d="M118 162 L128 172 L138 162" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+  
+  <!-- Neck -->
+  <rect x="117" y="148" width="22" height="20" rx="5" fill="#FADCB8"/>
+  
+  <!-- Head -->
+  <ellipse cx="128" cy="118" rx="38" ry="44" fill="#FADCB8"/>
+  
+  <!-- Hair - low ponytail -->
+  <path d="M90 100 Q90 68 105 60 Q120 52 128 54 Q136 52 151 60 Q166 68 166 100 Q164 85 150 78 Q138 72 128 74 Q118 72 106 78 Q92 85 90 100 Z" fill="#1A1A2E"/>
+  <!-- Hair sides -->
+  <path d="M90 100 Q88 108 90 120 Q92 108 92 98 Z" fill="#1A1A2E"/>
+  <path d="M166 100 Q168 108 166 120 Q164 108 164 98 Z" fill="#1A1A2E"/>
+  <!-- Low ponytail -->
+  <path d="M145 80 Q158 78 162 90 Q165 105 160 125 Q155 140 148 148" fill="none" stroke="#1A1A2E" stroke-width="12" stroke-linecap="round"/>
+  <path d="M148 148 Q145 155 140 160 Q135 158 138 150 Q140 142 145 135" fill="#1A1A2E"/>
+  <!-- Hair tie -->
+  <circle cx="152" cy="88" r="4" fill="#718096"/>
+  
+  <!-- Ears -->
+  <ellipse cx="90" cy="120" rx="5" ry="9" fill="#F0C8A4"/>
+  <ellipse cx="166" cy="120" rx="5" ry="9" fill="#F0C8A4"/>
+  
+  <!-- Silver glasses -->
+  <rect x="96" y="107" width="26" height="20" rx="5" fill="none" stroke="#A0AEC0" stroke-width="2.5"/>
+  <rect x="134" y="107" width="26" height="20" rx="5" fill="none" stroke="#A0AEC0" stroke-width="2.5"/>
+  <line x1="122" y1="115" x2="134" y2="115" stroke="#A0AEC0" stroke-width="2"/>
+  <line x1="96" y1="115" x2="88" y2="112" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round"/>
+  <line x1="160" y1="115" x2="168" y2="112" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round"/>
+  <!-- Lens glare -->
+  <line x1="100" y1="110" x2="105" y2="113" stroke="#CBD5E0" stroke-width="1" opacity="0.6"/>
+  <line x1="138" y1="110" x2="143" y2="113" stroke="#CBD5E0" stroke-width="1" opacity="0.6"/>
+  
+  <!-- Eyes behind glasses - sharp, analytical -->
+  <ellipse cx="112" cy="118" rx="5" ry="6" fill="white"/>
+  <ellipse cx="144" cy="118" rx="5" ry="6" fill="white"/>
+  <circle cx="112" cy="119" r="4" fill="#2D3748"/>
+  <circle cx="144" cy="119" r="4" fill="#2D3748"/>
+  <circle cx="113" cy="117" r="1.5" fill="white"/>
+  <circle cx="145" cy="117" r="1.5" fill="white"/>
+  
+  <!-- Eyebrows - precise, defined -->
+  <path d="M102 102 Q112 98 121 101" fill="none" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M135 101 Q144 98 154 102" fill="none" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Nose -->
+  <path d="M128 120 L125 130 Q128 132 131 130" fill="none" stroke="#E0B899" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Mouth - composed, slight confident smile -->
+  <path d="M118 140 Q128 145 138 140" fill="none" stroke="#C08060" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Subtle cheek color -->
+  <ellipse cx="105" cy="133" rx="6" ry="4" fill="#FFD4C4" opacity="0.25"/>
+  <ellipse cx="151" cy="133" rx="6" ry="4" fill="#FFD4C4" opacity="0.25"/>
+  
+  <!-- Blouse under blazer -->
+  <path d="M112 168 Q128 174 144 168 L146 180 Q128 186 110 180 Z" fill="#F7FAFC"/>
+  
+  <!-- Label -->
+  <rect x="82" y="240" width="92" height="14" rx="7" fill="#2D3748" opacity="0.8"/>
+  <text x="128" y="250" text-anchor="middle" font-family="sans-serif" font-size="8" fill="white" font-weight="bold">陈雪琳 · Delta 📊</text>
+</svg>
