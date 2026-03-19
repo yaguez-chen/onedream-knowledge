@@ -2,8 +2,8 @@
 
 **联合团队：** 艾普西隆 🛡️（安全分析）+ 贝塔 🔵（监察审查）+ 梦想家 🧠（决策）
 **编制/汇总：** 阿尔法 🦐（CEO）
-**版本：** v1.2 — 融合三方意见 + CEO补充实施细节
-**更新时间：** 2026-03-19 23:42 (GMT+8)
+**版本：** v1.3 — 贝塔执行CEO指令修订
+**更新时间：** 2026-03-20 01:10 (GMT+8)
 **状态：** 待梦想家最终批准
 
 ---
@@ -15,6 +15,7 @@
 | v1.0 | 20:15 | 艾普西隆初版 |
 | v1.1 | 22:20 | 融合贝塔审核（权限等级/威胁补充）|
 | v1.2 | 23:42 | CEO补充：实施步骤细化/回滚方案/灰度验证 |
+| v1.3 | 01:10 | 贝塔执行CEO指令：扩展禁止命令+收紧Exec白名单 |
 
 ---
 
@@ -94,18 +95,38 @@ Level 3 | 受限Agent    — 只读操作（预留，当前无Agent）
 ### 4.1 全局禁止命令（任何Agent不可执行）
 ```yaml
 forbidden_commands:
+  # 系统级破坏
   - "rm -rf /"
   - "rm -rf /*"
   - "chmod 777"
   - "kill -9 1"
-  - "curl | sh"
-  - "wget | sh"
   - "> /dev/sda"
   - "dd if=/dev/zero"
   - "mkfs"
   - ":(){ :|:& };:"   # fork bomb
-  - "openclaw gateway restart"  # 仅Level 0
+  # 任意命令执行（通杀）
+  - "bash -c"
+  - "sh -c"
+  - "python3 -c"
+  - "python -c"
+  - "node -e"
+  - "perl -e"
+  - "ruby -e"
+  # 供应链/远程代码执行
+  - "curl | sh"
+  - "curl | bash"
+  - "wget | sh"
+  - "wget | bash"
+  - "curl.*|.*sh"      # 正则：curl管道到sh
+  - "wget.*|.*sh"
+  # 网关控制（仅Level 0）
+  - "openclaw gateway restart"
   - "openclaw gateway stop"
+  - "openclaw gateway start"
+  # 危险的shell通配
+  - "rm -rf *"
+  - "rm -rf ~"
+  - "rm -rf ."
 ```
 
 ### 4.2 Level 1 Agent（阿尔法/贝塔/艾普西隆）
@@ -131,7 +152,7 @@ exec:
       gamma:  [npm, npx, clawhub, node]
       delta:  [python3, pytest, ab, wrk]
       iota:   [cat, grep, sort, awk]
-      zeta:   [crontab, systemctl, "/home/gang/.openclaw/scripts/*.sh"]
+      zeta:   [crontab, systemctl, "/home/gang/.openclaw/scripts/backup.sh", "/home/gang/.openclaw/scripts/healthcheck.sh"]  # 仅限具体脚本，不使用通配
       eta:    [git, curl, tar, gzip]
       theta:  [curl, cat, grep]
       lambda: [node, python3, curl, git]
