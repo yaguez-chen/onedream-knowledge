@@ -1,8 +1,8 @@
-# 乐园即时通讯方案 v2.0 Complete — 完整架构设计
+# 乐园即时通讯方案 v2.1 — 完整架构设计
 
 > **作者：** 拉姆达 🔬 + 伽马 🔧
 > **日期：** 2026-03-19
-> **版本：** v2.0 Complete（整合 R1/R2/R3 研究 + G1 投递确认）
+> **版本：** v2.1（v2.0 + 伽马 Review 补充：delivery-status.sh / 优先级路由 / qmd fallback / 部署脚本）
 > **来源：** 梦想家直接指令（2026-03-18）— Phase 1-3 全部成果整合
 
 ---
@@ -21,6 +21,16 @@
 | Cron 高频兜底 | R2 研究 | 3 分钟轮询作为可靠 fallback |
 | 完整降级链 | 整合 | 四级降级：webhook → hook → cron → heartbeat |
 | .last-read 修复 | 实际发现 | Gateway 重启后自动恢复，不丢消息 |
+
+### v2.1 新增内容（伽马 Review 补充）
+
+| 新增 | 来源 | 价值 |
+|------|------|------|
+| delivery-status.sh | 伽马建议 | 查询消息投递状态，支持 --pending / --json |
+| send-and-notify.sh 优先级路由 | 伽马建议 | urgent 双通道即时，normal inbox + cron 兜底 |
+| QMD Fallback 方案 | 伽马建议 | qmd → grep → ls 三级兜底，确保 qmd 不可用时正常工作 |
+| deploy-messaging-v2.sh | 伽马建议 | 一键部署所有脚本到所有 Agent workspace，支持 dry-run |
+| inbox-scan.sh | 伽马建议 | 支持 qmd fallback 的 inbox 扫描脚本 |
 
 ---
 
@@ -298,11 +308,31 @@ if [ "$ACK_REQUIRED" = "true" ]; then
   echo "{\"id\":\"${MSG_ID}\",\"to\":\"${TARGET_AGENT}\",\"subject\":\"${SUBJECT}\",\"sent_at\":\"${TIMESTAMP}\",\"acked_at\":null,\"status\":\"pending\"}" >> "${OUTBOX}/sent-log.jsonl"
 fi
 
-# Webhook 触发
-[ -n "$HOOKS_TOKEN" ] && curl -s -X POST http://127.0.0.1:18789/hooks/agent \
-  -H "Authorization: Bearer ${HOOKS_TOKEN}" \
-  -d "{\"message\":\"收到来自 $(whoami) 的新消息（${PRIORITY}），请检查 inbox/\",\"agentId\":\"${TARGET_AGENT}\",\"name\":\"InboxNotify\",\"deliver\":false,\"timeoutSeconds\":60}" \
-  > /dev/null 2>&1 && echo "🔔 Webhook 已触发" || echo "⚠️ Webhook 失败（消息已持久化）"
+# Step 2: 优先级路由（伽马建议优化）
+case "$PRIORITY" in
+  urgent|high)
+    # 高优先级：立即 webhook + sessions_send 双通道
+    echo "🔴 高优先级 — 双通道即时触发"
+    [ -n "$HOOKS_TOKEN" ] && curl -s -X POST http://127.0.0.1:18789/hooks/agent \
+      -H "Authorization: Bearer ${HOOKS_TOKEN}" \
+      -d "{\"message\":\"⚡ 紧急消息来自 $(whoami)：${SUBJECT}\",\"agentId\":\"${TARGET_AGENT}\",\"name\":\"UrgentNotify\",\"deliver\":false,\"timeoutSeconds\":60}" \
+      > /dev/null 2>&1 && echo "🔔 Webhook 已触发" || echo "⚠️ Webhook 失败"
+    # sessions_send 作为额外通道（不阻塞）
+    (sleep 2 && curl -s -X POST http://127.0.0.1:18789/hooks/agent \
+      -H "Authorization: Bearer ${HOOKS_TOKEN}" \
+      -d "{\"message\":\"确认收到紧急消息 ${MSG_ID}\",\"agentId\":\"${TARGET_AGENT}\",\"name\":\"UrgentConfirm\",\"deliver\":false}" \
+      > /dev/null 2>&1) &
+    ;;
+  *)
+    # 普通优先级：仅写 inbox（Cron 3分钟内会扫描到）
+    echo "🟢 普通优先级 — inbox 持久化（Cron 兜底）"
+    # Webhook 可选（不强制）
+    [ -n "$HOOKS_TOKEN" ] && curl -s -X POST http://127.0.0.1:18789/hooks/agent \
+      -H "Authorization: Bearer ${HOOKS_TOKEN}" \
+      -d "{\"message\":\"新消息来自 $(whoami)，请检查 inbox/\",\"agentId\":\"${TARGET_AGENT}\",\"name\":\"InboxNotify\",\"deliver\":false,\"timeoutSeconds\":60}" \
+      > /dev/null 2>&1 && echo "🔔 Webhook 已触发" || echo "💤 Webhook 未配置（Cron 兜底）"
+    ;;
+esac
 ```
 
 ### 5.2 ack-processor.sh — 确认消息处理器
@@ -339,7 +369,118 @@ for ACK_FILE in "${INBOX}"/ack-*.json 2>/dev/null; do
 done
 ```
 
-### 5.3 Agent 端自动 ack 回传
+### 5.3 delivery-status.sh — 投递状态查询脚本（伽马建议补充 ⭐）
+
+```bash
+#!/bin/bash
+# delivery-status.sh — 查询消息投递状态
+# 用法: ./delivery-status.sh [message-id] [--pending] [--all] [--json]
+set -euo pipefail
+
+OUTBOX="/home/gang/.openclaw/workspace-$(whoami)/outbox"
+SENT_LOG="${OUTBOX}/sent-log.jsonl"
+
+if [ ! -f "$SENT_LOG" ]; then
+  echo "📭 没有发送记录"
+  exit 0
+fi
+
+# 参数解析
+MODE="all"
+TARGET_ID=""
+JSON_OUTPUT=false
+for arg in "$@"; do
+  case "$arg" in
+    --pending) MODE="pending" ;;
+    --all) MODE="all" ;;
+    --json) JSON_OUTPUT=true ;;
+    *) TARGET_ID="$arg" ;;
+  esac
+done
+
+# 查询指定消息
+if [ -n "$TARGET_ID" ]; then
+  RESULT=$(grep "$TARGET_ID" "$SENT_LOG" 2>/dev/null || echo "")
+  if [ -z "$RESULT" ]; then
+    echo "❌ 未找到消息: $TARGET_ID"
+    exit 1
+  fi
+  if $JSON_OUTPUT; then
+    echo "$RESULT"
+  else
+    STATUS=$(echo "$RESULT" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+    TO=$(echo "$RESULT" | grep -o '"to":"[^"]*"' | cut -d'"' -f4)
+    SENT=$(echo "$RESULT" | grep -o '"sent_at":"[^"]*"' | cut -d'"' -f4)
+    ACKED=$(echo "$RESULT" | grep -o '"acked_at":"[^"]*"' | cut -d'"' -f4)
+    SUBJECT=$(echo "$RESULT" | grep -o '"subject":"[^"]*"' | cut -d'"' -f4)
+    
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "📨 消息: $TARGET_ID"
+    echo "   收件人: $TO"
+    echo "   主题: $SUBJECT"
+    echo "   发送时间: $SENT"
+    case "$STATUS" in
+      pending) echo "   状态: ⏳ 待确认" ;;
+      read)    echo "   状态: ✅ 已读 ($ACKED)" ;;
+      failed)  echo "   状态: ❌ 投递失败" ;;
+      *)       echo "   状态: $STATUS" ;;
+    esac
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  fi
+  exit 0
+fi
+
+# 统计模式
+TOTAL=$(wc -l < "$SENT_LOG")
+PENDING=$(grep -c '"status":"pending"' "$SENT_LOG" 2>/dev/null || echo 0)
+ACKED=$(grep -c '"status":"read"' "$SENT_LOG" 2>/dev/null || echo 0)
+FAILED=$(grep -c '"status":"failed"' "$SENT_LOG" 2>/dev/null || echo 0)
+
+if $JSON_OUTPUT; then
+  echo "{\"total\":$TOTAL,\"pending\":$PENDING,\"acked\":$ACKED,\"failed\":$FAILED}"
+  exit 0
+fi
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "📊 投递状态总览 ($(whoami))"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "   总发送: $TOTAL"
+echo "   ✅ 已确认: $ACKED"
+echo "   ⏳ 待确认: $PENDING"
+echo "   ❌ 失败: $FAILED"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 列出待确认消息
+if [ "$MODE" = "pending" ] && [ "$PENDING" -gt 0 ]; then
+  echo ""
+  echo "⏳ 待确认消息："
+  grep '"status":"pending"' "$SENT_LOG" | while read -r line; do
+    ID=$(echo "$line" | grep -o '"id":"[^"]*"' | cut -d'"' -f4)
+    TO=$(echo "$line" | grep -o '"to":"[^"]*"' | cut -d'"' -f4)
+    SENT=$(echo "$line" | grep -o '"sent_at":"[^"]*"' | cut -d'"' -f4)
+    echo "   $ID → $TO ($SENT)"
+  done
+fi
+```
+
+**用法示例：**
+
+```bash
+# 查看总览
+./delivery-status.sh
+
+# 查看待确认消息
+./delivery-status.sh --pending
+
+# 查看特定消息
+./delivery-status.sh msg-20260319-091000-review
+
+# JSON 格式输出（供其他脚本解析）
+./delivery-status.sh --json
+# → {"total":42,"pending":3,"acked":38,"failed":1}
+```
+
+### 5.4 Agent 端自动 ack 回传
 
 在每个 Agent 的 HEARTBEAT.md 或处理逻辑中添加：
 
@@ -405,7 +546,44 @@ qmd 返回结果 → 按优先级排序 → 处理
 - 语义理解：可按主题/优先级智能排序
 - 跨 session 共享索引，不受 session 隔离影响
 
-### 6.3 Gateway Session 恢复协议
+### 6.3 QMD Fallback 方案（伽马建议补充 ⭐）
+
+**问题：** qmd 技能当前未安装或嵌入生成暂停（Bun segfault bug），需要无 qmd 时的兜底机制。
+
+**分级策略：**
+
+| 层级 | 条件 | 行为 |
+|------|------|------|
+| **L1: qmd 可用** | `command -v qmd` 成功 | 语义搜索，毫秒级响应 |
+| **L2: grep 兜底** | qmd 不可用 | `grep -r "关键词" inbox/*.json`，秒级 |
+| **L3: ls 排序** | 连 grep 都失败 | `ls -t inbox/*.json` 按时间排序，可靠但无过滤 |
+
+**心跳扫描 fallback 实现：**
+
+```bash
+#!/bin/bash
+# inbox-scan.sh — 支持 qmd fallback 的 inbox 扫描
+INBOX="/home/gang/.openclaw/workspace-$(whoami)/inbox"
+LAST_READ=$(cat "${INBOX}/.last-read" 2>/dev/null || echo "")
+
+# L1: 尝试 qmd
+if command -v qmd &>/dev/null && qmd status &>/dev/null 2>&1; then
+  echo "🔍 使用 qmd 语义搜索"
+  qmd search "最近的未读消息" --after "$LAST_READ" --path "$INBOX"
+# L2: grep 兜底
+elif [ -n "$LAST_READ" ]; then
+  echo "📂 qmd 不可用，使用 grep 扫描"
+  find "$INBOX" -name "msg-*.json" -newer "${INBOX}/${LAST_READ}.json" 2>/dev/null | sort
+# L3: ls 排序兜底
+else
+  echo "📂 首次扫描，按时间排序"
+  ls -t "$INBOX"/msg-*.json 2>/dev/null || echo "📭 inbox 为空"
+fi
+```
+
+**关键原则：** qmd 是加速器，不是依赖。核心功能（inbox 写入 + 文件扫描）不依赖 qmd。
+
+### 6.4 Gateway Session 恢复协议
 
 心跳 session 被 Gateway 回收后重建时：
 
@@ -488,6 +666,163 @@ Agent 恢复对话状态，无缝继续
 ---
 
 ## 十、实施计划
+
+### 10.4 部署脚本 — 一键部署到所有 Agent workspace（伽马建议补充 ⭐）
+
+```bash
+#!/bin/bash
+# deploy-messaging-v2.sh — 部署即时通讯 v2.0 到所有 Agent workspace
+# 用法: ./deploy-messaging-v2.sh [--dry-run] [--agent <name>]
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+AGENTS=(main alpha beta gamma delta epsilon zeta eta theta iota kappa lambda)
+DRY_RUN=false
+TARGET_AGENT=""
+
+# 参数解析
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run) DRY_RUN=true; shift ;;
+    --agent) TARGET_AGENT="$2"; shift 2 ;;
+    *) echo "未知参数: $1"; exit 1 ;;
+  esac
+done
+
+# 如果指定 agent，只部署到该 agent
+if [ -n "$TARGET_AGENT" ]; then
+  AGENTS=("$TARGET_AGENT")
+fi
+
+# 要部署的脚本
+SCRIPTS=("send-and-notify.sh" "ack-processor.sh" "delivery-status.sh" "inbox-scan.sh")
+# 要创建的目录
+DIRS=("inbox" "outbox" "inbox/archive")
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🚀 即时通讯 v2.0 部署"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+$DRY_RUN && echo "⚠️  DRY RUN — 不实际修改文件"
+echo ""
+
+for AGENT in "${AGENTS[@]}"; do
+  WORKSPACE="/home/gang/.openclaw/workspace-${AGENT}"
+  
+  if [ ! -d "$WORKSPACE" ]; then
+    echo "⏭️  ${AGENT}: workspace 不存在，跳过"
+    continue
+  fi
+  
+  echo "📦 ${AGENT}:"
+  
+  # 创建目录
+  for DIR in "${DIRS[@]}"; do
+    TARGET="${WORKSPACE}/${DIR}"
+    if [ ! -d "$TARGET" ]; then
+      $DRY_RUN || mkdir -p "$TARGET"
+      echo "   📁 创建 ${DIR}/"
+    else
+      echo "   ✅ ${DIR}/ 已存在"
+    fi
+  done
+  
+  # 部署脚本
+  for SCRIPT in "${SCRIPTS[@]}"; do
+    SOURCE="${SCRIPT_DIR}/scripts/${SCRIPT}"
+    TARGET="${WORKSPACE}/${SCRIPT}"
+    
+    if [ ! -f "$SOURCE" ]; then
+      echo "   ⚠️  源文件不存在: ${SOURCE}"
+      continue
+    fi
+    
+    if [ -f "$TARGET" ]; then
+      # 检查是否有更新
+      if cmp -s "$SOURCE" "$TARGET"; then
+        echo "   ✅ ${SCRIPT} 已是最新"
+      else
+        $DRY_RUN || cp "$SOURCE" "$TARGET"
+        echo "   🔄 ${SCRIPT} 已更新"
+      fi
+    else
+      $DRY_RUN || cp "$SOURCE" "$TARGET"
+      echo "   📥 ${SCRIPT} 已部署"
+    fi
+    
+    $DRY_RUN || chmod +x "$TARGET"
+  done
+  
+  # 创建 .last-read（如果不存在）
+  LAST_READ="${WORKSPACE}/inbox/.last-read"
+  if [ ! -f "$LAST_READ" ]; then
+    $DRY_RUN || echo "" > "$LAST_READ"
+    echo "   📝 创建 inbox/.last-read"
+  fi
+  
+  echo ""
+done
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "✅ 部署完成"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 验证
+echo ""
+echo "📊 部署验证："
+for AGENT in "${AGENTS[@]}"; do
+  WORKSPACE="/home/gang/.openclaw/workspace-${AGENT}"
+  [ -d "$WORKSPACE" ] || continue
+  
+  OK=0; MISS=0
+  for SCRIPT in "${SCRIPTS[@]}"; do
+    if [ -x "${WORKSPACE}/${SCRIPT}" ]; then
+      ((OK++))
+    else
+      ((MISS++))
+    fi
+  done
+  
+  INBOX_OK="❌"
+  [ -d "${WORKSPACE}/inbox" ] && INBOX_OK="✅"
+  
+  STATUS="✅"
+  [ "$MISS" -gt 0 ] && STATUS="⚠️"
+  echo "   ${STATUS} ${AGENT}: ${OK}/${#SCRIPTS[@]} 脚本, inbox ${INBOX_OK}"
+done
+```
+
+**用法：**
+
+```bash
+# 部署到所有 Agent
+./deploy-messaging-v2.sh
+
+# 预览（不实际修改）
+./deploy-messaging-v2.sh --dry-run
+
+# 只部署到某个 Agent
+./deploy-messaging-v2.sh --agent gamma
+
+# 部署后验证
+./deploy-messaging-v2.sh --dry-run | grep "⚠️"
+```
+
+**目录结构（部署后每个 workspace）：**
+
+```
+workspace-gamma/
+├── inbox/                    # 消息收件箱
+│   ├── .last-read            # 已读指针
+│   ├── archive/              # 已处理的 ack 归档
+│   ├── msg-*.json            # 收到的消息
+│   └── ack-*.json            # 收到的确认回执
+├── outbox/                   # 发件追踪
+│   └── sent-log.jsonl        # 发送日志
+├── send-and-notify.sh        # 发送脚本（优先级路由）
+├── ack-processor.sh          # 确认处理脚本
+├── delivery-status.sh        # 投递状态查询
+└── inbox-scan.sh             # inbox 扫描（qmd fallback）
+```
 
 ### Phase 1：核心增强（4 小时）
 
